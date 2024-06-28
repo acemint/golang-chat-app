@@ -10,9 +10,9 @@ import (
 	"gorm.io/gorm"
 )
 
-var PostgresDB *gorm.DB
+var DB *gorm.DB
+var MemberRepository *MemberRepositoryStruct
 
-// TODO: Create repository methods & transactional for DB Connections
 func InitializePostgreSqlConnection() error {
 	dbConf := configuration.AppConfiguration.Database
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
@@ -24,10 +24,17 @@ func InitializePostgreSqlConnection() error {
 		dbConf.SSLMode,
 		dbConf.TimeZone)
 
-	db, err := gorm.Open(postgres.New(postgres.Config{DSN: dsn, PreferSimpleProtocol: true}), &gorm.Config{})
+	created_db, err := gorm.Open(postgres.New(postgres.Config{DSN: dsn, PreferSimpleProtocol: true}), &gorm.Config{})
 	if err != nil {
 		return err
 	}
-	PostgresDB = db
+	DB = created_db
+	initializeRepositories()
 	return nil
+}
+
+func initializeRepositories() {
+	MemberRepository = &MemberRepositoryStruct{
+		db: DB,
+	}
 }

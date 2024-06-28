@@ -8,7 +8,7 @@ import (
 
 type Member struct {
 	ID        string         `gorm:"column:id;type:uuid;primaryKey"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;not null"`
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at"`
 	CreatedAt time.Time      `gorm:"column:created_at;not null"`
 	UpdatedAt time.Time      `gorm:"column:updated_at;not null"`
 	Email     string         `gorm:"column:email;not null"`

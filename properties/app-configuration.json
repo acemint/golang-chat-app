@@ -1,0 +1,13 @@
+{
+    "database": {
+        "host": "localhost",
+        "port": 5433,
+        "database": "chat-app",
+        "username": "steven_kristian",
+        "password": "testingProject1234:)"
+    },
+
+    "server": {
+        "port": 8080
+    }
+}
