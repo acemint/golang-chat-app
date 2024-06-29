@@ -1,5 +1,5 @@
-CREATE TABLE member (
-    id UUID PRIMARY KEY,
+CREATE TABLE ca_member (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     deleted_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -10,8 +10,8 @@ CREATE TABLE member (
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE transactions (
-    id UUID PRIMARY KEY,
+CREATE TABLE ca_transaction (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     deleted_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
