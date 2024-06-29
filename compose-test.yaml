@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  postgres-test:
+    image: postgres
+    environment:
+      POSTGRES_DB: chat-app-test
+      POSTGRES_USER: steven_kristian
+      POSTGRES_PASSWORD: testingProject1234:)
+    ports:
+      - 5434:5432

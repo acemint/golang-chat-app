@@ -1,0 +1,15 @@
+{
+    "database": {
+        "host": "localhost",
+        "port": 5434,
+        "databaseName": "chat-app-test",
+        "username": "steven_kristian",
+        "password": "testingProject1234:)",
+        "sslMode": "disable",
+        "timeZone": "Asia/Jakarta"
+    },
+
+    "server": {
+        "port": 9867
+    }
+}
