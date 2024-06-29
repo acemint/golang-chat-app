@@ -17,6 +17,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
+	"github.com/smartystreets/goconvey/convey"
 	"gorm.io/gorm"
 )
 
@@ -83,20 +84,52 @@ func testTeardown() {
 }
 
 func TestCreateMember(t *testing.T) {
-	requestBody := dto.CreateMemberRequest{
-		Name:     "test-username",
-		Email:    "test@gmail.com",
-		Gender:   "MALE",
-		Password: "test123",
-	}
-	jsonReqBody, _ := json.Marshal(requestBody)
-	request, _ := http.NewRequest(http.MethodPost, "/v1/member", strings.NewReader(string(jsonReqBody)))
+	convey.Convey("given a request body", t, func() {
+		requestBody := dto.CreateMemberRequest{
+			Name:     "test-username",
+			Email:    "test@gmail.com",
+			Gender:   "MALE",
+			Password: "test123",
+		}
 
-	httpRec := httptest.NewRecorder()
-	Server.ServeHTTP(httpRec, request)
+		jsonReqBody, _ := json.Marshal(requestBody)
+		request, _ := http.NewRequest(http.MethodPost, "/v1/member", strings.NewReader(string(jsonReqBody)))
 
-	var expectedMember domain.Member
-	testRepository.Raw("SELECT * FROM ca_member WHERE email = 'test@gmail.com'").Find(&expectedMember)
-	assert.Equal(t, http.StatusOK, httpRec.Code)
-	assert.Equal(t, domain.Member{}, expectedMember)
+		httpRec := httptest.NewRecorder()
+		Server.ServeHTTP(httpRec, request)
+
+		convey.Convey("Make sure there is a data inserted into the database", func() {
+			var expectedMember domain.Member
+			testRepository.Raw("SELECT * FROM ca_member WHERE email = 'test@gmail.com'").Find(&expectedMember)
+			assert.Equal(t, http.StatusOK, httpRec.Code)
+			assert.Equal(t, domain.Member{}, expectedMember)
+		})
+	})
+}
+
+func TestCreateMemberWithExistingMemberEmail(t *testing.T) {
+	convey.Convey("given an already created member and a request body", t, func() {
+		testRepository.Exec("INSERT INTO ca_member(Name, Email, Gender, Password) VALUES ('test-username', 'test@gmail.com', 'MALE', '12345')")
+
+		convey.Convey("when the API is hit", func() {
+			requestBody := dto.CreateMemberRequest{
+				Name:     "test-username",
+				Email:    "test@gmail.com",
+				Gender:   "MALE",
+				Password: "test123",
+			}
+			jsonReqBody, _ := json.Marshal(requestBody)
+			request, _ := http.NewRequest(http.MethodPost, "/v1/member", strings.NewReader(string(jsonReqBody)))
+
+			httpRec := httptest.NewRecorder()
+			Server.ServeHTTP(httpRec, request)
+
+			convey.Convey("Make sure there is a data inserted into the database", func() {
+				var expectedMembers []domain.Member
+				testRepository.Raw("SELECT * FROM ca_member WHERE email = 'test@gmail.com'").Find(&expectedMembers)
+				assert.Equal(t, http.StatusInternalServerError, httpRec.Code)
+				assert.Equal(t, 1, len(expectedMembers))
+			})
+		})
+	})
 }
