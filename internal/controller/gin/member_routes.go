@@ -1,7 +1,9 @@
 package controller
 
 import (
+	"log"
 	"net/http"
+	"time"
 
 	"chat-app/domain"
 	"chat-app/dto"
@@ -11,8 +13,9 @@ import (
 )
 
 const (
-	baseMemberPath = "/member"
-	rootMemberPath = "/"
+	baseMemberPath        = "/member"
+	rootMemberPath        = ""
+	createTransactionPath = "/transaction"
 )
 
 type MemberRouterStruct struct {

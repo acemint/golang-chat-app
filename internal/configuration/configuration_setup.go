@@ -44,3 +44,30 @@ func Initialize(profile string) error {
 	}
 	return nil
 }
+
+func InitializeWithSpecifiedWorkingDirectory(workingDirectory string, profile string) error {
+	if AppConfiguration != nil {
+		return nil
+	}
+
+	var confFileName string
+	if profile == "" {
+		logging.Log.Infof("Initializing configuration without specific profile set")
+		confFileName = FileName + FileType
+	} else {
+		logging.Log.Infof("Initializing configuration with -profile=%s", profile)
+		confFileName = FileName + "-" + profile + FileType
+	}
+
+	configurationFile, err := os.ReadFile(filepath.Join(workingDirectory, FolderPath, confFileName))
+	if err != nil {
+		return err
+	}
+
+	AppConfiguration = new(Configuration)
+	err = json.Unmarshal(configurationFile, &AppConfiguration)
+	if err != nil {
+		return err
+	}
+	return nil
+}

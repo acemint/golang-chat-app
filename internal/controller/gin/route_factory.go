@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	baseApiPath = "/v1/"
+	baseApiPath = "/v1"
 )
 
 var routerGroupV1 *gin.RouterGroup
