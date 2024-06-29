@@ -10,10 +10,13 @@ type MemberRepositoryStruct struct {
 	db *gorm.DB
 }
 
-func (r *MemberRepositoryStruct) FindActiveMember(email string) (*domain.Member, error) {
-	var member domain.Member
-	result := r.db.Where(&domain.Member{Email: email}).First(&member)
-	return &member, result.Error
+func (r *MemberRepositoryStruct) FindSingleActiveMember(email string) (*domain.Member, error) {
+	var members []domain.Member
+	result := r.db.Where(&domain.Member{Email: email}).Limit(1).Find(&members)
+	if len(members) == 0 {
+		return nil, nil
+	}
+	return &members[0], result.Error
 }
 
 func (r *MemberRepositoryStruct) CreateMember(member *domain.Member) (*domain.Member, error) {

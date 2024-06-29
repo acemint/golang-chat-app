@@ -32,10 +32,10 @@ func (mr *MemberRouterStruct) addRoutesToGroup(rg *gin.RouterGroup) {
 		member := convertToMember(&createMemberRequest)
 		result, err := mr.memberService.CreateMember(member)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		ctx.JSON(http.StatusOK, result)
+		ctx.JSON(http.StatusOK, gin.H{"value": result})
 	})
 
 }

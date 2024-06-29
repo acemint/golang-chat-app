@@ -11,7 +11,7 @@ func (Member) TableName() string {
 }
 
 type Member struct {
-	ID        string         `gorm:"column:id;type:uuid;primaryKey"`
+	ID        string         `gorm:"column:id;type:uuid;primaryKey;default:gen_random_uuid()"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at"`
 	CreatedAt time.Time      `gorm:"column:created_at;not null"`
 	UpdatedAt time.Time      `gorm:"column:updated_at;not null"`
@@ -23,11 +23,11 @@ type Member struct {
 }
 
 func (Transaction) TableName() string {
-	return "ca_transaction"
+	return "profiles"
 }
 
 type Transaction struct {
-	ID               string         `gorm:"column:id;type:uuid;primaryKey"`
+	ID               string         `gorm:"column:id;type:uuid;primaryKey;default:gen_random_uuid()"`
 	DeletedAt        gorm.DeletedAt `gorm:"column:deleted_at"`
 	CreatedAt        time.Time      `gorm:"column:created_at"`
 	UpdatedAt        time.Time      `gorm:"column:updated_at"`
