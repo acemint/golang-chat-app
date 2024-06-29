@@ -21,7 +21,7 @@ func InitializeConnection() error {
 	}
 	DB = created_db
 
-	initializeRepositories()
+	initializeRepositories(DB)
 	return nil
 }
 
@@ -38,8 +38,8 @@ func setupDriver() gorm.Dialector {
 	return postgres.New(postgres.Config{DSN: dsn, PreferSimpleProtocol: true})
 }
 
-func initializeRepositories() {
+func initializeRepositories(db *gorm.DB) {
 	MemberRepository = &MemberRepositoryStruct{
-		db: DB,
+		db: db,
 	}
 }

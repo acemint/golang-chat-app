@@ -1,4 +1,4 @@
-package controller
+package service
 
 import (
 	repository "chat-app/internal/repository/postgres"
