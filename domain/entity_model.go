@@ -1,4 +1,4 @@
-package repository
+package domain
 
 type UpdateableMember struct {
 	Email    string `gorm:"column:email;not null"`

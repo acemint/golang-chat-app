@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 
+	"chat-app/domain"
 	repository "chat-app/internal/repository/postgres"
 
 	"gorm.io/gorm"
@@ -11,7 +12,7 @@ import (
 var MemberService *MemberServiceStruct
 
 type MemberServiceInterface interface {
-	CreateMember(*repository.Member)
+	CreateMember(*domain.Member)
 }
 
 type MemberServiceStruct struct {
@@ -19,7 +20,7 @@ type MemberServiceStruct struct {
 	memberRepository *repository.MemberRepositoryStruct
 }
 
-func (s *MemberServiceStruct) CreateMember(member *repository.Member) (*repository.Member, error) {
+func (s *MemberServiceStruct) CreateMember(member *domain.Member) (*domain.Member, error) {
 	s.db.Transaction(func(tx *gorm.DB) error {
 		_, err := s.memberRepository.FindActiveMember(member.Email)
 		if err == nil {

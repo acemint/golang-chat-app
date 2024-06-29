@@ -1,28 +1,32 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"chat-app/domain"
+
+	"gorm.io/gorm"
+)
 
 type MemberRepositoryStruct struct {
 	db *gorm.DB
 }
 
-func (r *MemberRepositoryStruct) FindActiveMember(email string) (*Member, error) {
-	var member Member
-	result := r.db.Where(&Member{Email: email}).First(&member)
+func (r *MemberRepositoryStruct) FindActiveMember(email string) (*domain.Member, error) {
+	var member domain.Member
+	result := r.db.Where(&domain.Member{Email: email}).First(&member)
 	return &member, result.Error
 }
 
-func (r *MemberRepositoryStruct) CreateMember(member *Member) (*Member, error) {
+func (r *MemberRepositoryStruct) CreateMember(member *domain.Member) (*domain.Member, error) {
 	result := r.db.Create(member)
 	return member, result.Error
 }
 
 func (r *MemberRepositoryStruct) DeleteMember(email string) error {
-	result := r.db.Delete(&Member{Email: email})
+	result := r.db.Delete(&domain.Member{Email: email})
 	return result.Error
 }
 
-func (r *MemberRepositoryStruct) UpdateMember(member *Member, updateableMemberData *UpdateableMember) (*Member, error) {
+func (r *MemberRepositoryStruct) UpdateMember(member *domain.Member, updateableMemberData *domain.UpdateableMember) (*domain.Member, error) {
 	member.Email = updateableMemberData.Email
 	member.Name = updateableMemberData.Name
 	member.Age = updateableMemberData.Age
