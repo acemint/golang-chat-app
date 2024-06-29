@@ -11,10 +11,6 @@ import (
 
 var MemberService *MemberServiceStruct
 
-type MemberServiceInterface interface {
-	CreateMember(*domain.Member)
-}
-
 type MemberServiceStruct struct {
 	db               *gorm.DB
 	memberRepository *repository.MemberRepositoryStruct
