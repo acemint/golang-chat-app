@@ -4,8 +4,10 @@ import (
 	"flag"
 
 	"chat-app/internal/configuration"
+	controller "chat-app/internal/controller/gin"
 	"chat-app/internal/logging"
-	"chat-app/internal/repository"
+	repository "chat-app/internal/repository/postgres"
+	"chat-app/internal/service"
 )
 
 func main() {
@@ -17,11 +19,19 @@ func main() {
 		panic(err)
 	}
 
-	if err := repository.InitializePostgreSqlConnection(); err != nil {
+	if err := repository.InitializeConnection(); err != nil {
 		logging.Log.Error(err)
 		panic(err)
 	}
+	repository.InitializeRepositories(repository.DB)
 
-	// TODO: Create connection using Gin. Some of the API will include: POST /member, GET /member, PUT /transaction, GET /transaction
+	service.InitializeService(repository.DB, repository.MemberRepository)
+
+	controller.InitializeGinServer()
+	controller.InitializeRoutes(controller.Server, service.MemberService)
+	if err := controller.StartGinServer(); err != nil {
+		logging.Log.Error(err)
+		panic(err)
+	}
 
 }

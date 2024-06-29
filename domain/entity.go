@@ -6,6 +6,10 @@ import (
 	"gorm.io/gorm"
 )
 
+func (Member) TableName() string {
+	return "ca_member"
+}
+
 type Member struct {
 	ID        string         `gorm:"column:id;type:uuid;primaryKey"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at"`
@@ -16,6 +20,10 @@ type Member struct {
 	Age       int            `gorm:"column:age;not null"`
 	Gender    string         `gorm:"column:gender;not null"`
 	Password  string         `gorm:"column:password;not null"`
+}
+
+func (Transaction) TableName() string {
+	return "ca_transaction"
 }
 
 type Transaction struct {

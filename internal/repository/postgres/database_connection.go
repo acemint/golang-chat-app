@@ -11,7 +11,6 @@ import (
 )
 
 var DB *gorm.DB
-var MemberRepository *MemberRepositoryStruct
 
 func InitializeConnection() error {
 	driver := setupDriver()
@@ -20,8 +19,6 @@ func InitializeConnection() error {
 		return err
 	}
 	DB = created_db
-
-	initializeRepositories(DB)
 	return nil
 }
 
@@ -36,10 +33,4 @@ func setupDriver() gorm.Dialector {
 		dbConf.SSLMode,
 		dbConf.TimeZone)
 	return postgres.New(postgres.Config{DSN: dsn, PreferSimpleProtocol: true})
-}
-
-func initializeRepositories(db *gorm.DB) {
-	MemberRepository = &MemberRepositoryStruct{
-		db: db,
-	}
 }

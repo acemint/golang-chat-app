@@ -1,15 +1,11 @@
 package service
 
 import (
-	"errors"
-
 	"chat-app/domain"
 	repository "chat-app/internal/repository/postgres"
 
 	"gorm.io/gorm"
 )
-
-var MemberService *MemberServiceStruct
 
 type MemberServiceStruct struct {
 	db               *gorm.DB
@@ -17,13 +13,16 @@ type MemberServiceStruct struct {
 }
 
 func (s *MemberServiceStruct) CreateMember(member *domain.Member) (*domain.Member, error) {
-	s.db.Transaction(func(tx *gorm.DB) error {
+	err := s.db.Transaction(func(tx *gorm.DB) error {
 		_, err := s.memberRepository.FindActiveMember(member.Email)
-		if err == nil {
-			return errors.New("email already taken")
+		if err != nil {
+			return err
 		}
 		s.memberRepository.CreateMember(member)
 		return nil
 	})
+	if err != nil {
+		return nil, err
+	}
 	return s.memberRepository.FindActiveMember(member.Email)
 }
