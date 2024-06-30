@@ -19,6 +19,15 @@ func (r *MemberRepositoryStruct) FindSingleActiveMember(email string) (*domain.M
 	return &members[0], result.Error
 }
 
+func (r *MemberRepositoryStruct) FindSingleActiveMemberByID(id string) (*domain.Member, error) {
+	var members []domain.Member
+	result := r.db.Where(&domain.Member{ID: id}).Limit(1).Find(&members)
+	if len(members) == 0 {
+		return nil, nil
+	}
+	return &members[0], result.Error
+}
+
 func (r *MemberRepositoryStruct) CreateMember(member *domain.Member) (*domain.Member, error) {
 	result := r.db.Create(member)
 	return member, result.Error

@@ -33,3 +33,17 @@ func (s *MemberServiceStruct) CreateMember(member *domain.Member) (*domain.Membe
 	}
 	return s.memberRepository.FindSingleActiveMember(member.Email)
 }
+
+func (s *MemberServiceStruct) FindMemberById(id string) (*domain.Member, error) {
+	return s.memberRepository.FindSingleActiveMemberByID(id)
+}
+
+// Say this is a dummy function where we want to make sure that the member has a certain transaction limit
+func (s *MemberServiceStruct) IsTransactionOverLimit(sender *domain.Member) error {
+	return nil
+}
+
+// Say this is also a dummy function to make sure to check whether the current transaction being made is suspicious
+func (s *MemberServiceStruct) ValidateFraudActivity(member *domain.Member, receiver *domain.Member, transaction *domain.Transaction) error {
+	return nil
+}
