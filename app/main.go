@@ -27,7 +27,7 @@ func main() {
 
 	service.InitializeService(repository.DB, repository.MemberRepository)
 
-	controller.InitializeGinServer()
+	controller.InitializeGinServer("dev")
 	controller.InitializeRoutes(controller.Server, service.MemberService)
 	if err := controller.StartGinServer(); err != nil {
 		logging.Log.Error(err)

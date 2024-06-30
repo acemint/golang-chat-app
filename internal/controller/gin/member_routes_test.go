@@ -50,7 +50,7 @@ func testSetup() {
 
 	service.InitializeService(repository.DB, repository.MemberRepository)
 
-	InitializeGinServer()
+	InitializeGinServer("")
 	InitializeRoutes(Server, service.MemberService)
 	testServer = Server
 	testRepository = repository.DB

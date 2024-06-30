@@ -6,6 +6,7 @@ import (
 	"errors"
 	"strconv"
 
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,8 +16,13 @@ const (
 
 var Server *gin.Engine
 
-func InitializeGinServer() {
+func InitializeGinServer(profilerPath string) {
 	Server = gin.Default()
+
+	if profilerPath != "" {
+		logging.Log.Debug("Added profiler to server in path " + profilerPath)
+		pprof.Register(Server, profilerPath)
+	}
 }
 
 func StartGinServer() error {

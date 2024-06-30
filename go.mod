@@ -3,6 +3,7 @@ module chat-app
 go 1.19
 
 require (
+	github.com/gin-contrib/pprof v1.5.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-playground/assert/v2 v2.2.0
 	github.com/sirupsen/logrus v1.9.3
